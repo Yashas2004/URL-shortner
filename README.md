@@ -50,7 +50,7 @@ url-shortener/
 ### 1. Clone and install dependencies
 
 ```bash
-git clone <this-repo-url>
+git clone https://github.com/Yashas2004/URL-shortner.git
 cd url-shortener
 
 cd server && npm install
@@ -114,6 +114,7 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 - **Location accuracy**: click locations are resolved from the visitor's IP address via `geoip-lite`, an offline lookup. This only works for real public IP addresses — requests from `localhost` or a private LAN IP will show "Unknown" and no coordinates, since those addresses have no real-world location. It resolves correctly once the backend is deployed and reached over the public internet.
 - **"Real-time" analytics** is implemented via polling (every 4 seconds while the analytics modal is open), not a persistent WebSocket connection — there can be a few seconds of lag before a new click appears.
 
-## Author
 
-Built by Yashas as a portfolio project.
+## try it:
+
+https://url-shortener-snipit.vercel.app/
