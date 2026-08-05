@@ -16,7 +16,7 @@ A full-stack URL shortener built with the MERN stack (MongoDB, Express, React, N
 
 **Frontend**: React 19, Vite, React Router, Tailwind CSS v4, Motion (Framer Motion), lucide-react, @react-oauth/google, qrcode.react
 
-**Backend**: Node.js, Express 5, MongoDB + Mongoose, JSON Web Tokens, bcryptjs, google-auth-library, ua-parser-js, geoip-lite, express-rate-limit, helmet, cors
+**Backend**: Node.js, Express 5, MongoDB + Mongoose, JSON Web Tokens, bcryptjs, google-auth-library, ua-parser-js, ip-api.com (geolocation), express-rate-limit, helmet, cors
 
 ## Project structure
 
@@ -111,7 +111,8 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 
 ## Known limitations
 
-- **Location accuracy**: click locations are resolved from the visitor's IP address via `geoip-lite`, an offline lookup. This only works for real public IP addresses — requests from `localhost` or a private LAN IP will show "Unknown" and no coordinates, since those addresses have no real-world location. It resolves correctly once the backend is deployed and reached over the public internet.
+- **Location accuracy**: click locations are resolved from the visitor's IP address via the free [ip-api.com](https://ip-api.com) API (no key required). This only works for real public IP addresses — requests from `localhost` or a private LAN IP will show "Unknown" and no coordinates, since those addresses have no real-world location. It resolves correctly once the backend is deployed and reached over the public internet. Even then, IP geolocation is inherently approximate — mobile carriers (especially in India) route many users through shared regional IP blocks, so a visitor's city can resolve to their carrier's registered hub rather than their literal location. This is a limitation of IP-based geolocation in general, not specific to this implementation.
+- Some clicks may show `Unknown` device/OS/location — this often isn't a bug: when a link is shared via WhatsApp, Instagram, Telegram, etc., those apps' servers "click" the link once automatically to generate a link preview, before a human ever taps it. That automated prefetch gets logged as a click too, carrying the messaging platform's own server IP and a bot-like `User-Agent`.
 - **"Real-time" analytics** is implemented via polling (every 4 seconds while the analytics modal is open), not a persistent WebSocket connection — there can be a few seconds of lag before a new click appears.
 
 ## Author

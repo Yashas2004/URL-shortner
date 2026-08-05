@@ -1,6 +1,5 @@
 const validator = require('validator');
 const { UAParser } = require('ua-parser-js');
-const geoip = require('geoip-lite');
 const Url = require('../models/Url');
 const Click = require('../models/Click');
 const generateShortCode = require('../utils/generateShortCode');
@@ -43,9 +42,28 @@ const shortenUrl = async (req, res) => {
   }
 };
 
+const lookupGeoLocation = async (ip) => {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+
+    const response = await fetch(
+      `http://ip-api.com/json/${ip}?fields=status,country,city,lat,lon`,
+      { signal: controller.signal }
+    );
+    clearTimeout(timeout);
+
+    const data = await response.json();
+    return data.status === 'success' ? data : null;
+  } catch (error) {
+    console.error('Geolocation lookup failed:', error);
+    return null;
+  }
+};
+
 const logClick = async (url, req) => {
   const { device, browser, os } = new UAParser(req.headers['user-agent']).getResult();
-  const geo = geoip.lookup(req.ip);
+  const geo = await lookupGeoLocation(req.ip);
 
   await Click.create({
     url: url._id,
@@ -54,8 +72,8 @@ const logClick = async (url, req) => {
     os: os.name || 'Unknown',
     country: geo?.country || 'Unknown',
     city: geo?.city || 'Unknown',
-    lat: geo?.ll?.[0] ?? null,
-    lon: geo?.ll?.[1] ?? null,
+    lat: geo?.lat ?? null,
+    lon: geo?.lon ?? null,
     referrer: req.headers.referer || 'Direct',
   });
 };
