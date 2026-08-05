@@ -50,7 +50,7 @@ url-shortener/
 ### 1. Clone and install dependencies
 
 ```bash
-git clone <this-repo-url>
+git clone https://github.com/Yashas2004/URL-shortner.git
 cd url-shortener
 
 cd server && npm install
@@ -115,6 +115,7 @@ Open the URL Vite prints (usually `http://localhost:5173`).
 - Some clicks may show `Unknown` device/OS/location — this often isn't a bug: when a link is shared via WhatsApp, Instagram, Telegram, etc., those apps' servers "click" the link once automatically to generate a link preview, before a human ever taps it. That automated prefetch gets logged as a click too, carrying the messaging platform's own server IP and a bot-like `User-Agent`.
 - **"Real-time" analytics** is implemented via polling (every 4 seconds while the analytics modal is open), not a persistent WebSocket connection — there can be a few seconds of lag before a new click appears.
 
-## Author
 
-Built by Yashas as a portfolio project.
+## try it:
+
+https://url-shortener-snipit.vercel.app/
