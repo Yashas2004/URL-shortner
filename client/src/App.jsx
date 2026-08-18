@@ -1,6 +1,7 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
@@ -36,6 +37,7 @@ function App() {
           <AnimatedRoutes />
         </BrowserRouter>
       </AuthProvider>
+      <Analytics />
     </GoogleOAuthProvider>
   );
 }
